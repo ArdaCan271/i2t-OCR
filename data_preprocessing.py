@@ -6,8 +6,8 @@ from joblib import Parallel, delayed
 
 
 def preprocess_image(image, target_size=(32, 32)):
-    image = cv2.resize(image, target_size)      # Resize the image to the target size
-    image = image / 255.0                       # Normalize the image
+    image = cv2.resize(image, target_size)                          # Resize the image to the target size
+    image = image / 255.0                                           # Normalize the image
     return image
 
 
@@ -15,15 +15,14 @@ def process_single_image(image_path, utf8_string, bbox):
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"Failed to read image: {image_path}")
-
+    
     x, y, w, h = bbox.strip('[]').split(',')
     x, y, w, h = float(x), float(y), float(w), float(h)
-
-    # Ensure the bounding box is within image bounds
-    height, width = image.shape[:2]
+    
+    height, width = image.shape[:2]                                 # Ensure the bounding box is within image bounds
     if x < 0 or y < 0 or x + w > width or y + h > height:
-        return None, None  # Skip this image
-
+        return None, None                                           # Skip this image
+        
     bbox_image = image[int(y):int(y + h), int(x):int(x + w)]
     preprocessed_image = preprocess_image(bbox_image)
     return preprocessed_image, utf8_string

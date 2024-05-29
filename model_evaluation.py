@@ -4,14 +4,11 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
 import editdistance
 
-# Load data loading and preprocessing functions
 from data_loading import load_data_new
 from data_preprocessing import preprocess_data_new
 from model_training import CER_WER_Callback, create_model
 
-# Define a function to evaluate the model
 def evaluate_model(model_path, annot_path, images_dir, num_rows=1000):
-    # Load and preprocess data
     dataset, vocab, max_len = load_data_new(annot_path, images_dir, num_rows)
     images, labels = preprocess_data_new(dataset)
 
@@ -21,8 +18,7 @@ def evaluate_model(model_path, annot_path, images_dir, num_rows=1000):
     num_classes = len(label_encoder.classes_)
     encoded_labels = tf.keras.utils.to_categorical(encoded_labels, num_classes)
 
-    # Load the trained model
-    model = tf.keras.models.load_model(model_path)
+    model = tf.keras.models.load_model(model_path)      # Load the trained model
 
     # Make predictions on the entire dataset
     predictions = model.predict(images)
